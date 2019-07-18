@@ -16,10 +16,11 @@
         <p>
           {{ user?.bio }}
         </p>
-        <h3 class="my-3">Project Details</h3>
+        <h3 class="my-3">User Details</h3>
         <ul>
-          <li>Location: {{ user?.location }}</li>
-          <li>Registered: {{ user?.created_at | date }}</li>
+          <li>login: {{ user?.login }}</li>
+          <li>type: {{ user?.type }}</li>
+          <li>github page: <a target="_blank" [href]="user?.html_url">github</a> </li>
         </ul>
       </div>
     </div>
