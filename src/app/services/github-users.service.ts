@@ -13,4 +13,8 @@ export class GithubUsersService {
   getUsers(q = '') {
     return this.http.get(`https://api.github.com/search/users?q=${q}&per_page=20`);
   }
+
+  getUser(login) {
+    return this.http.get(`https://api.github.com/users/${login}`);
+  }
 }

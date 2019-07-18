@@ -1,3 +1,27 @@
-<p>
-  page-detail works!
-</p>
+<div class="container">
+  <h1 class="my-4">
+    {{ user?.name }}
+    <small>{{ user?.company }}</small>
+  </h1>
+
+  <!-- Portfolio Item Row -->
+  <div class="row">
+    <!-- <div class="d-flex justify-content-center"> -->
+      <div class="col-md-6 col-sm-12">
+        <img *ngIf="user" class="img-fluid" [src]="user.avatar_url" alt="" />
+      </div>
+
+      <div class="col-md-4 col-sm-12">
+        <h3 class="my-3">{{ user?.name }}</h3>
+        <p>
+          {{ user?.bio }}
+        </p>
+        <h3 class="my-3">Project Details</h3>
+        <ul>
+          <li>Location: {{ user?.location }}</li>
+          <li>Registered: {{ user?.created_at | date }}</li>
+        </ul>
+      </div>
+    </div>
+  <!-- </div> -->
+</div>
