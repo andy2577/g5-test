@@ -1,5 +1,20 @@
-<app-search-bar></app-search-bar>
+<app-search-bar (searchResults)="onSearchResults($event)"></app-search-bar>
 
-<div>
-  this will show results in blocks
-</div>
+<table *ngIf="users" class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Score</th>
+      <th scope="col">User Name</th>
+      <th scope="col">Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users; let i = index" >
+      <th scope="row">{{i + 1}}</th>
+      <td>{{user.score}}</td>
+      <td>{{user.login}}</td>
+      <td><a [routerLink]="['../detail', user.id]" >details</a></td>
+    </tr>
+  </tbody>
+</table>

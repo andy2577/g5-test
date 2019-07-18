@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./page-table.component.scss']
 })
 export class PageTableComponent implements OnInit {
+  users: any;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onSearchResults(items) {
+    this.users = items;
   }
 
 }

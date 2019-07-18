@@ -10,7 +10,7 @@ export class GithubUsersService {
     private http: HttpClient
   ) { }
 
-  getUsers(q) {
-    return this.http.get('https://api.github.com/search/users?q=tom+repos&per_page=10');
+  getUsers(q = '') {
+    return this.http.get(`https://api.github.com/search/users?q=${q}&per_page=10`);
   }
 }

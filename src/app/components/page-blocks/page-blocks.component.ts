@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-page-blocks',
@@ -6,10 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./page-blocks.component.scss']
 })
 export class PageBlocksComponent implements OnInit {
+  users: any;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onSearchResults(items) {
+    console.log('this is page -------- , ', items);
+    this.users = items;
   }
 
 }

@@ -1,5 +1,18 @@
-<app-search-bar></app-search-bar>
+<app-search-bar (searchResults)="onSearchResults($event)"></app-search-bar>
 
-<div>
-  this will show results in blocks
+<div class="container">
+  <div class="card-deck" *ngFor="let user of users">
+    <div class="card" style="width: 20rem;">
+      <img class="card-img-top" [src]="user.avatar_url" alt="Card image cap" />
+      <div class="card-body">
+        <h4 class="card-title">{{ user.login }}</h4>
+        <p class="card-text">
+          score: {{user.score}}
+        </p>
+        <a [routerLink]="['../detail', user.id]" class="btn btn-primary"
+          >See Details</a
+        >
+      </div>
+    </div>
+  </div>
 </div>

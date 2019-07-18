@@ -9,7 +9,7 @@
     <br />
     <div class="row justify-content-center">
       <div class="col-12 col-md-10 col-lg-8">
-        <form class="card card-sm">
+        <form [formGroup]="search" class="card card-sm" (ngSubmit)="searchUsers(search.value)" >
           <div class="card-body row no-gutters align-items-center">
             <div class="col-auto">
               <i class="fas fa-search h4 text-body"></i>
@@ -18,7 +18,8 @@
               <input
                 class="form-control form-control-lg form-control-borderless"
                 type="search"
-                placeholder="Search topics or keywords"
+                placeholder="Search Github users"
+                formControlName="query"
               />
             </div>
             <div class="col-auto">
@@ -32,3 +33,4 @@
     </div>
   </div>
 </div>
+<p *ngIf="totalResults" >total records found: {{totalResults}} </p>
