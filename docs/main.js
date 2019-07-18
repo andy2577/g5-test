@@ -272,7 +272,7 @@ var NavigationBarComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<app-search-bar (searchResults)=\"onSearchResults($event)\"></app-search-bar>\n\n<div class=\"container\">\n  <div class=\"card-deck\" *ngFor=\"let user of users\">\n    <div class=\"card\" style=\"width: 20rem;\">\n      <img class=\"card-img-top\" [src]=\"user.avatar_url\" alt=\"Card image cap\" />\n      <div class=\"card-body\">\n        <h4 class=\"card-title\">{{ user.login }}</h4>\n        <p class=\"card-text\">\n          score: {{user.score}}\n        </p>\n        <a [routerLink]=\"['../detail', user.login]\" class=\"btn btn-primary\"\n          >See Details</a\n        >\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<app-search-bar (searchResults)=\"onSearchResults($event)\"></app-search-bar>\n\n<div class=\"container\">\n  <div class=\"card-deck d-flex justify-content-center\">\n  <div *ngFor=\"let user of users\">\n    <div class=\"card mb-3\" style=\"width: 20rem\">\n      <img class=\"img-fluid card-img-top\" [src]=\"user.avatar_url\" alt=\"Card image cap\" />\n      <div class=\"card-body\">\n        <h4 class=\"card-title\">{{ user.login }}</h4>\n        <p class=\"card-text\">\n          score: {{user.score}}\n        </p>\n        <a [routerLink]=\"['../detail', user.login]\" class=\"btn btn-primary\"\n          >See Details</a\n        >\n      </div>\n    </div>\n  </div>\n</div>\n</div>\n"
 
 /***/ }),
 
@@ -338,7 +338,7 @@ var PageBlocksComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  page-detail works!\n</p>\n"
+module.exports = "<div class=\"container\">\n  <h1 class=\"my-4\">\n    {{ user?.name }}\n    <small>{{ user?.company }}</small>\n  </h1>\n\n  <!-- Portfolio Item Row -->\n  <div class=\"row\">\n    <!-- <div class=\"d-flex justify-content-center\"> -->\n      <div class=\"col-md-6 col-sm-12\">\n        <img *ngIf=\"user\" class=\"img-fluid\" [src]=\"user.avatar_url\" alt=\"\" />\n      </div>\n\n      <div class=\"col-md-4 col-sm-12\">\n        <h3 class=\"my-3\">{{ user?.name }}</h3>\n        <p>\n          {{ user?.bio }}\n        </p>\n        <h3 class=\"my-3\">User Details</h3>\n        <ul>\n          <li>login: {{ user?.login }}</li>\n          <li>type: {{ user?.type }}</li>\n          <li>github page: <a target=\"_blank\" [href]=\"user?.html_url\">github</a> </li>\n        </ul>\n      </div>\n    </div>\n  <!-- </div> -->\n</div>\n"
 
 /***/ }),
 
@@ -365,6 +365,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageDetailComponent", function() { return PageDetailComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var src_app_services_github_users_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/github-users.service */ "./src/app/services/github-users.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -376,14 +378,25 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
+
 var PageDetailComponent = /** @class */ (function () {
-    function PageDetailComponent(route) {
+    function PageDetailComponent(route, gitService) {
         this.route = route;
+        this.gitService = gitService;
     }
     PageDetailComponent.prototype.ngOnInit = function () {
-        this.subToRoute = this.route.params.subscribe(function (param) {
-            console.log(param);
+        var _this = this;
+        this.subToRoute = this.route.params.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (param) { return param.login; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(function (user) {
+            return _this.gitService.getUser(user);
+        })).subscribe(function (user) {
+            _this.user = user;
         });
+    };
+    PageDetailComponent.prototype.ngOnDestroy = function () {
+        if (this.subToRoute) {
+            this.subToRoute.unsubscribe();
+        }
     };
     PageDetailComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -391,7 +404,8 @@ var PageDetailComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./page-detail.component.html */ "./src/app/components/page-detail/page-detail.component.html"),
             styles: [__webpack_require__(/*! ./page-detail.component.scss */ "./src/app/components/page-detail/page-detail.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
+            src_app_services_github_users_service__WEBPACK_IMPORTED_MODULE_2__["GithubUsersService"]])
     ], PageDetailComponent);
     return PageDetailComponent;
 }());
@@ -589,6 +603,9 @@ var GithubUsersService = /** @class */ (function () {
     GithubUsersService.prototype.getUsers = function (q) {
         if (q === void 0) { q = ''; }
         return this.http.get("https://api.github.com/search/users?q=" + q + "&per_page=20");
+    };
+    GithubUsersService.prototype.getUser = function (login) {
+        return this.http.get("https://api.github.com/users/" + login);
     };
     GithubUsersService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
