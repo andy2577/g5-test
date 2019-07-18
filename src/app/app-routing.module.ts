@@ -7,7 +7,7 @@ import { PageDetailComponent } from './components/page-detail/page-detail.compon
 const routes: Routes = [
   {path: 'blocks',  component: PageBlocksComponent},
   {path: 'table',  component: PageTableComponent},
-  {path: 'detail/:id',  component: PageDetailComponent},
+  {path: 'detail/:login',  component: PageDetailComponent},
   {path: '**', redirectTo: 'blocks', pathMatch: 'full'},
 ];
 

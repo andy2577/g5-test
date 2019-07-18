@@ -14,7 +14,6 @@ export class PageBlocksComponent implements OnInit {
   }
 
   onSearchResults(items) {
-    console.log('this is page -------- , ', items);
     this.users = items;
   }
 

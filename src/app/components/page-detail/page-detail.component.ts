@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-page-detail',
@@ -6,10 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./page-detail.component.scss']
 })
 export class PageDetailComponent implements OnInit {
+  subToRoute: any;
 
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+    this.subToRoute = this.route.params.subscribe((param) => {
+      console.log(param);
+    });
   }
 
 }
